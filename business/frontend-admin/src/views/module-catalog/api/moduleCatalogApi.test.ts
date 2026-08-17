@@ -17,7 +17,7 @@ describe('module catalog response normalization', () => {
           active: true,
           backend: {
             service: 'catalog',
-            origin: 'http://catalog:8090',
+            origin: 'http://catalog:18090',
             grpc: null,
             httpRoutes: [{
               surface: 'shop',

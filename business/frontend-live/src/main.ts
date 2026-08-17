@@ -6,6 +6,6 @@ void mountStorefrontHost(document.querySelector('#app')!, {
   surface: 'live', title: 'LiveShop Live Viewer',
   realm: 'CUSTOMER',
   shopCode: import.meta.env.VITE_SHOP_CODE || 'local-shop',
-  gatewayBaseUrl: import.meta.env.VITE_GATEWAY_URL || 'http://127.0.0.1:8081',
+  gatewayBaseUrl: import.meta.env.VITE_GATEWAY_URL || 'http://127.0.0.1:18081',
   outlets: ['live.player.overlay', 'live.room.product-panel', 'live.room.interaction-panel'],
 })

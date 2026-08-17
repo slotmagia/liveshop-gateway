@@ -3,21 +3,21 @@ services:
   gateway:
     image: ${LIVESHOP_IMAGE_PREFIX}/backend:${LIVESHOP_IMAGE_TAG}
     build: !reset null
-    ports: !override ["192.168.5.140:8081:8081"]
+    ports: !override ["192.168.5.140:18081:18081"]
   admin-host:
     image: ${LIVESHOP_IMAGE_PREFIX}/frontend-admin:${LIVESHOP_IMAGE_TAG}
     build: !reset null
-    ports: !override ["192.168.5.140:5173:8080"]
+    ports: !override ["192.168.5.140:15173:18080"]
   merch-host:
     image: ${LIVESHOP_IMAGE_PREFIX}/frontend-merch:${LIVESHOP_IMAGE_TAG}
     build: !reset null
-    ports: !override ["192.168.5.140:5174:8080"]
+    ports: !override ["192.168.5.140:15174:18080"]
   shop-host:
     image: ${LIVESHOP_IMAGE_PREFIX}/frontend-shop:${LIVESHOP_IMAGE_TAG}
     build: !reset null
-    ports: !override ["192.168.5.140:5175:8080"]
+    ports: !override ["192.168.5.140:15175:18080"]
   live-host:
     image: ${LIVESHOP_IMAGE_PREFIX}/frontend-live:${LIVESHOP_IMAGE_TAG}
     build: !reset null
-    ports: !override ["192.168.5.140:5176:8080"]
+    ports: !override ["192.168.5.140:15176:18080"]
 

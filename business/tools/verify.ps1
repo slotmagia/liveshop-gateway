@@ -48,7 +48,7 @@ if ($LASTEXITCODE -eq 0 -and $forbiddenHostImports) {
 }
 
 $browserSources = @($frontendRoots.FullName) + @((Join-Path $root 'packages/host-runtime'))
-$directPlatformTraffic = rg -n 'VITE_REGISTRY_URL|registryBaseUrl|127\.0\.0\.1:8082' $browserSources 2>$null
+$directPlatformTraffic = rg -n 'VITE_REGISTRY_URL|registryBaseUrl|127\.0\.0\.1:18082' $browserSources 2>$null
 if ($LASTEXITCODE -eq 0 -and $directPlatformTraffic) {
   throw "Browser Host bypasses Gateway:`n$directPlatformTraffic"
 }

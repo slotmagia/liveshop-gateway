@@ -61,10 +61,10 @@ func TestIdentityBrowserTrafficUsesExplicitGatewayRoutes(t *testing.T) {
 func TestCORSAllowsConfiguredIframeArtifactOrigin(t *testing.T) {
 	gateway := New(Config{
 		PlatformRegistryURL: "http://platform.invalid",
-		SurfaceOrigins:      map[string][]string{"merch": {"http://127.0.0.1:5174", "http://127.0.0.1:5191"}},
+		SurfaceOrigins:      map[string][]string{"merch": {"http://127.0.0.1:15174", "http://127.0.0.1:15191"}},
 	})
 	request := httptest.NewRequest(http.MethodOptions, "/merch/catalog/products", nil)
-	request.Header.Set("Origin", "http://127.0.0.1:5191")
+	request.Header.Set("Origin", "http://127.0.0.1:15191")
 	request.Header.Set("Access-Control-Request-Method", http.MethodGet)
 	request.Header.Set("Access-Control-Request-Headers", "authorization,x-liveshop-surface")
 	response := httptest.NewRecorder()
@@ -74,7 +74,7 @@ func TestCORSAllowsConfiguredIframeArtifactOrigin(t *testing.T) {
 	if response.Code != http.StatusNoContent {
 		t.Fatalf("iframe preflight returned %d: %s", response.Code, response.Body.String())
 	}
-	if response.Header().Get("Access-Control-Allow-Origin") != "http://127.0.0.1:5191" {
+	if response.Header().Get("Access-Control-Allow-Origin") != "http://127.0.0.1:15191" {
 		t.Fatalf("unexpected allow origin %q", response.Header().Get("Access-Control-Allow-Origin"))
 	}
 	if !headerContainsToken(response.Header().Values("Vary"), "Origin") {
@@ -85,10 +85,10 @@ func TestCORSAllowsConfiguredIframeArtifactOrigin(t *testing.T) {
 func TestCORSPreflightAllowsIdempotencyKey(t *testing.T) {
 	gateway := New(Config{
 		PlatformRegistryURL: "http://platform.invalid",
-		SurfaceOrigins:      map[string][]string{"merch": {"http://127.0.0.1:5191"}},
+		SurfaceOrigins:      map[string][]string{"merch": {"http://127.0.0.1:15191"}},
 	})
 	request := httptest.NewRequest(http.MethodOptions, "/merch/catalog/categories", nil)
-	request.Header.Set("Origin", "http://127.0.0.1:5191")
+	request.Header.Set("Origin", "http://127.0.0.1:15191")
 	request.Header.Set("Access-Control-Request-Method", http.MethodPost)
 	request.Header.Set("Access-Control-Request-Headers", "authorization,content-type,x-liveshop-surface,idempotency-key")
 	response := httptest.NewRecorder()
@@ -115,9 +115,9 @@ func headerContainsToken(values []string, token string) bool {
 }
 
 func TestCORSRejectsUnconfiguredIframeArtifactOrigin(t *testing.T) {
-	gateway := New(Config{PlatformRegistryURL: "http://platform.invalid", SurfaceOrigins: map[string][]string{"merch": {"http://127.0.0.1:5174"}}})
+	gateway := New(Config{PlatformRegistryURL: "http://platform.invalid", SurfaceOrigins: map[string][]string{"merch": {"http://127.0.0.1:15174"}}})
 	request := httptest.NewRequest(http.MethodOptions, "/merch/catalog/products", nil)
-	request.Header.Set("Origin", "http://127.0.0.1:5191")
+	request.Header.Set("Origin", "http://127.0.0.1:15191")
 	response := httptest.NewRecorder()
 
 	gateway.Handler().ServeHTTP(response, request)
@@ -229,7 +229,7 @@ func TestGatewayReadinessRequiresNonEmptyRegistrySnapshot(t *testing.T) {
 	gateway.current.Store(&snapshot{
 		revision: 2,
 		routes: []route{{ActiveRoute: modulemanifest.ActiveRoute{
-			ModuleID: "identity", Surface: "admin", Prefix: "/admin/identity", Origin: "http://identity:8092",
+			ModuleID: "identity", Surface: "admin", Prefix: "/admin/identity", Origin: "http://identity:18092",
 		}}},
 		loadedAt: time.Now(),
 	})
@@ -311,7 +311,7 @@ func TestPathMatchesSegmentBoundary(t *testing.T) {
 
 func TestRouteCompilationRejectsAmbiguousOperationTemplates(t *testing.T) {
 	_, ok := compileRoutes(context.Background(), []modulemanifest.ActiveRoute{{
-		ModuleID: "catalog", Surface: "shop", Prefix: "/shop/catalog", Origin: "http://catalog:8090",
+		ModuleID: "catalog", Surface: "shop", Prefix: "/shop/catalog", Origin: "http://catalog:18090",
 		Operations: []modulemanifest.ActiveRouteOperation{
 			{Method: http.MethodGet, Path: "/shop/catalog/products/{id}", Authentication: "public"},
 			{Method: http.MethodGet, Path: "/shop/catalog/products/{slug}", Authentication: "module-session"},
@@ -608,7 +608,7 @@ func TestRouteRefreshRetainsValidSnapshotForEmptyOrStaleResponses(t *testing.T) 
 		response string
 	}{
 		{name: "empty", response: `{"code":0,"data":{"revision":9,"routes":[]}}`},
-		{name: "stale", response: `{"code":0,"data":{"revision":7,"routes":[{"moduleId":"catalog","surface":"shop","prefix":"/shop/catalog","origin":"http://catalog:8090"}]}}`},
+		{name: "stale", response: `{"code":0,"data":{"revision":7,"routes":[{"moduleId":"catalog","surface":"shop","prefix":"/shop/catalog","origin":"http://catalog:18090"}]}}`},
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			registryServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
@@ -617,7 +617,7 @@ func TestRouteRefreshRetainsValidSnapshotForEmptyOrStaleResponses(t *testing.T) 
 			}))
 			defer registryServer.Close()
 			gateway := New(Config{PlatformRegistryURL: registryServer.URL, Workload: issuer})
-			gateway.current.Store(&snapshot{revision: 8, routes: []route{{ActiveRoute: modulemanifest.ActiveRoute{ModuleID: "platform", Surface: "admin", Prefix: "/admin/platform", Origin: "http://platform:8082"}}}, loadedAt: time.Now()})
+			gateway.current.Store(&snapshot{revision: 8, routes: []route{{ActiveRoute: modulemanifest.ActiveRoute{ModuleID: "platform", Surface: "admin", Prefix: "/admin/platform", Origin: "http://platform:18082"}}}, loadedAt: time.Now()})
 
 			gateway.refresh(context.Background())
 			current := gateway.current.Load()

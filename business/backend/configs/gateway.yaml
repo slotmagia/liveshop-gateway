@@ -7,13 +7,13 @@ log:
   format: text
 
 server:
-  http: ":8081"
+  http: ":18081"
 
 identity:
-  origin_url: "http://127.0.0.1:8092"
+  origin_url: "http://127.0.0.1:18092"
 
 platform:
-  registry_url: "http://127.0.0.1:8082"
+  registry_url: "http://127.0.0.1:18082"
 
 # Public verification key of the Identity Module Capability issuer.
 module_capability:
@@ -33,29 +33,29 @@ http:
   # at Gateway and must not be callable across Admin/Merchant surfaces.
   surface_origins:
     admin:
-      - http://127.0.0.1:5173
-      - http://127.0.0.1:5177
-      - http://127.0.0.1:5180
-      - http://127.0.0.1:5201
-      - http://127.0.0.1:5290
-      - http://127.0.0.1:5300
+      - http://127.0.0.1:15173
+      - http://127.0.0.1:15177
+      - http://127.0.0.1:15180
+      - http://127.0.0.1:15201
+      - http://127.0.0.1:15290
+      - http://127.0.0.1:15300
     merch:
-      - http://127.0.0.1:5174
-      - http://127.0.0.1:5191
-      - http://127.0.0.1:5195
-      - http://127.0.0.1:5202
-      - http://127.0.0.1:5291
-      - http://127.0.0.1:5301
+      - http://127.0.0.1:15174
+      - http://127.0.0.1:15191
+      - http://127.0.0.1:15195
+      - http://127.0.0.1:15202
+      - http://127.0.0.1:15291
+      - http://127.0.0.1:15301
     shop:
-      - http://127.0.0.1:5175
-      - http://127.0.0.1:5192
-      - http://127.0.0.1:5203
-      - http://127.0.0.1:5292
-      - http://127.0.0.1:5302
+      - http://127.0.0.1:15175
+      - http://127.0.0.1:15192
+      - http://127.0.0.1:15203
+      - http://127.0.0.1:15292
+      - http://127.0.0.1:15302
     live:
-      - http://127.0.0.1:5176
-      - http://127.0.0.1:5204
-      - http://127.0.0.1:5303
+      - http://127.0.0.1:15176
+      - http://127.0.0.1:15204
+      - http://127.0.0.1:15303
 
 route_refresh:
   interval: 5s

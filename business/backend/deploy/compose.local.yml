@@ -9,7 +9,7 @@ services:
         protocol: ../../../../liveshop-platform/protocol
         kernel: ../../../../kernel-go
     command: ["-config", "/app/configs/gateway.compose.yaml"]
-    ports: ["127.0.0.1:8081:8081"]
+    ports: ["127.0.0.1:18081:18081"]
     read_only: true
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]
@@ -20,7 +20,7 @@ services:
       dockerfile: deploy/frontend.Dockerfile
       additional_contexts: {platform-packages: ../../../../liveshop-platform/business/packages}
       args: {WORKSPACE: "@liveshop/app-admin", SOURCE_DIR: frontend-admin}
-    ports: ["127.0.0.1:5173:8080"]
+    ports: ["127.0.0.1:15173:18080"]
     read_only: true
     tmpfs: ["/tmp", "/var/cache/nginx", "/var/run"]
     security_opt: ["no-new-privileges:true"]
@@ -33,7 +33,7 @@ services:
       dockerfile: deploy/frontend.Dockerfile
       additional_contexts: {platform-packages: ../../../../liveshop-platform/business/packages}
       args: {WORKSPACE: "@liveshop/app-merch", SOURCE_DIR: frontend-merch}
-    ports: ["127.0.0.1:5174:8080"]
+    ports: ["127.0.0.1:15174:18080"]
     read_only: true
     tmpfs: ["/tmp", "/var/cache/nginx", "/var/run"]
     security_opt: ["no-new-privileges:true"]
@@ -46,7 +46,7 @@ services:
       dockerfile: deploy/frontend.Dockerfile
       additional_contexts: {platform-packages: ../../../../liveshop-platform/business/packages}
       args: {WORKSPACE: "@liveshop/app-shop", SOURCE_DIR: frontend-shop}
-    ports: ["127.0.0.1:5175:8080"]
+    ports: ["127.0.0.1:15175:18080"]
     read_only: true
     tmpfs: ["/tmp", "/var/cache/nginx", "/var/run"]
     security_opt: ["no-new-privileges:true"]
@@ -59,7 +59,7 @@ services:
       dockerfile: deploy/frontend.Dockerfile
       additional_contexts: {platform-packages: ../../../../liveshop-platform/business/packages}
       args: {WORKSPACE: "@liveshop/app-live", SOURCE_DIR: frontend-live}
-    ports: ["127.0.0.1:5176:8080"]
+    ports: ["127.0.0.1:15176:18080"]
     read_only: true
     tmpfs: ["/tmp", "/var/cache/nginx", "/var/run"]
     security_opt: ["no-new-privileges:true"]

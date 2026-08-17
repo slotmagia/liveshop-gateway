@@ -15,11 +15,11 @@ RUN npm ci
 RUN npx --no-install tsc -p /workspace/liveshop-platform/business/packages/host-sdk/tsconfig.json
 ARG WORKSPACE
 ARG SOURCE_DIR
-ARG VITE_GATEWAY_URL=http://127.0.0.1:8081
+ARG VITE_GATEWAY_URL=http://127.0.0.1:18081
 ENV VITE_GATEWAY_URL=$VITE_GATEWAY_URL
 RUN npm run build:runtime && npm run build --workspace="$WORKSPACE" && mkdir -p /out && cp -R "$SOURCE_DIR/dist/." /out/
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 COPY deploy/nginx.frontend.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /out /usr/share/nginx/html
-EXPOSE 8080
+EXPOSE 18080

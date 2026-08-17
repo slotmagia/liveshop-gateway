@@ -34,7 +34,7 @@ func TestValidate(t *testing.T) {
 		},
 		{
 			name:    "identity URL is not an origin",
-			mutate:  func(cfg *Config) { cfg.Identity.OriginURL = "identity:8092" },
+			mutate:  func(cfg *Config) { cfg.Identity.OriginURL = "identity:18092" },
 			wantErr: "gateway: config identity.origin_url must be an http(s) origin",
 		},
 		{
@@ -44,7 +44,7 @@ func TestValidate(t *testing.T) {
 		},
 		{
 			name:    "registry URL is not an origin",
-			mutate:  func(cfg *Config) { cfg.Platform.RegistryURL = "platform:8082" },
+			mutate:  func(cfg *Config) { cfg.Platform.RegistryURL = "platform:18082" },
 			wantErr: "gateway: config platform.registry_url must be an http(s) origin",
 		},
 		{
@@ -65,16 +65,16 @@ func TestValidate(t *testing.T) {
 		{
 			name: "surface origin carries a path",
 			mutate: func(cfg *Config) {
-				cfg.HTTP.SurfaceOrigins = map[string][]string{"admin": {"http://127.0.0.1:5173/admin"}}
+				cfg.HTTP.SurfaceOrigins = map[string][]string{"admin": {"http://127.0.0.1:15173/admin"}}
 			},
 			wantErr: "gateway: config http.surface_origins.admin[0] must be a bare http(s) origin",
 		},
 		{
 			name: "origin belongs to two surfaces",
 			mutate: func(cfg *Config) {
-				cfg.HTTP.SurfaceOrigins = map[string][]string{"admin": {"http://127.0.0.1:5173"}, "merch": {"http://127.0.0.1:5173"}}
+				cfg.HTTP.SurfaceOrigins = map[string][]string{"admin": {"http://127.0.0.1:15173"}, "merch": {"http://127.0.0.1:15173"}}
 			},
-			wantErr: "gateway: browser origin http://127.0.0.1:5173 is assigned to both admin and merch",
+			wantErr: "gateway: browser origin http://127.0.0.1:15173 is assigned to both admin and merch",
 		},
 		{
 			name:    "invalid refresh interval",
@@ -139,16 +139,16 @@ func validConfig() *Config {
 	cfg := &Config{Service: "gateway"}
 	cfg.Log.Level = "info"
 	cfg.Log.Format = "text"
-	cfg.Server.HTTP = ":8081"
-	cfg.Identity.OriginURL = "http://identity:8092"
-	cfg.Platform.RegistryURL = "http://platform:8082"
+	cfg.Server.HTTP = ":18081"
+	cfg.Identity.OriginURL = "http://identity:18092"
+	cfg.Platform.RegistryURL = "http://platform:18082"
 	cfg.ModuleCapability.KeyID = "module-capability-dev-1"
 	cfg.ModuleCapability.PublicKey = "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo"
 	cfg.ModuleCapability.Issuer = "liveshop-identity"
 	cfg.WorkloadIdentity.KeyID = "gateway-workload-dev-1"
 	cfg.WorkloadIdentity.PrivateKey = "k51SIJI3oT-PJGXf2uWjL6jyTiDJ1Nwmk6l1ehqDrqA"
 	cfg.WorkloadIdentity.Issuer = "liveshop-workload-identity"
-	cfg.HTTP.SurfaceOrigins = map[string][]string{"admin": {"http://127.0.0.1:5173"}}
+	cfg.HTTP.SurfaceOrigins = map[string][]string{"admin": {"http://127.0.0.1:15173"}}
 	cfg.RouteRefresh.Interval = "5s"
 	cfg.RouteRefresh.Timeout = "3s"
 	cfg.RouteRefresh.MaxStaleness = "30s"

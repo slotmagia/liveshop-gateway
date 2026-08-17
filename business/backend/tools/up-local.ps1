@@ -47,8 +47,8 @@ function Wait-Ready([string]$Url, [int]$TimeoutMinutes = 5) {
 }
 
 Ensure-LocalNetwork
-Wait-Ready 'http://127.0.0.1:8082/readyz'
-Wait-Ready 'http://127.0.0.1:8092/readyz'
+Wait-Ready 'http://127.0.0.1:18082/readyz'
+Wait-Ready 'http://127.0.0.1:18092/readyz'
 
 if ($Fresh) {
   Invoke-Native { docker compose -f $compose down --remove-orphans } 'Failed to reset the local Gateway stack.'
@@ -56,15 +56,15 @@ if ($Fresh) {
 
 Invoke-Native { docker compose -f $compose up -d --build } 'Local Gateway and Host deployment failed.'
 foreach ($url in @(
-  'http://127.0.0.1:8081/readyz',
-  'http://127.0.0.1:5173',
-  'http://127.0.0.1:5174',
-  'http://127.0.0.1:5175',
-  'http://127.0.0.1:5176'
+  'http://127.0.0.1:18081/readyz',
+  'http://127.0.0.1:15173',
+  'http://127.0.0.1:15174',
+  'http://127.0.0.1:15175',
+  'http://127.0.0.1:15176'
 )) {
   if ($url.EndsWith('/readyz')) { Wait-Ready $url } else { Wait-Http $url }
 }
 
 Invoke-Native { docker compose -f $compose ps }
-Write-Host 'Gateway local containers are running: http://127.0.0.1:8081'
-Write-Host '  Admin http://127.0.0.1:5173  Merchant http://127.0.0.1:5174  Shop http://127.0.0.1:5175  Live http://127.0.0.1:5176'
+Write-Host 'Gateway local containers are running: http://127.0.0.1:18081'
+Write-Host '  Admin http://127.0.0.1:15173  Merchant http://127.0.0.1:15174  Shop http://127.0.0.1:15175  Live http://127.0.0.1:15176'
