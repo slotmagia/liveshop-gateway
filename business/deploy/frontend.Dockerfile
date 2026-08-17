@@ -12,6 +12,7 @@ COPY frontend-merch ./frontend-merch
 COPY frontend-shop ./frontend-shop
 COPY frontend-live ./frontend-live
 RUN npm ci
+RUN npx --no-install tsc -p /workspace/liveshop-platform/business/packages/host-sdk/tsconfig.json
 ARG WORKSPACE
 ARG SOURCE_DIR
 ARG VITE_GATEWAY_URL=http://127.0.0.1:8081
