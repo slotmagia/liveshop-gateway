@@ -18,6 +18,34 @@ func TestLoadLocalConfiguration(t *testing.T) {
 	}
 }
 
+func TestShippedConfigurationsAllowInternalTestOrigins(t *testing.T) {
+	for _, filename := range []string{"gateway.yaml", "gateway.compose.yaml"} {
+		cfg, err := Load(filepath.Join("..", "..", "..", "configs", filename))
+		if err != nil {
+			t.Fatalf("load %s: %v", filename, err)
+		}
+		for surface, origin := range map[string]string{
+			"admin": "http://192.168.5.140:15173",
+			"merch": "http://192.168.5.140:15174",
+			"shop":  "http://192.168.5.140:15175",
+			"live":  "http://192.168.5.140:15176",
+		} {
+			if !contains(cfg.HTTP.SurfaceOrigins[surface], origin) {
+				t.Errorf("%s %s origins do not contain %s", filename, surface, origin)
+			}
+		}
+	}
+}
+
+func contains(values []string, want string) bool {
+	for _, value := range values {
+		if value == want {
+			return true
+		}
+	}
+	return false
+}
+
 func TestLoadRejectsUnknownField(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "gateway.yaml")
 	document := "service: gateway\nlog:\n  level: info\n  format: text\nunexpected_key: 1\n"
