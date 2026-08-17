@@ -1,0 +1,7 @@
+.run/
+node_modules/
+dist/
+*.log
+*.exe
+*.test
+coverage.out

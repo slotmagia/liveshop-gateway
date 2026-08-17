@@ -1,0 +1,10 @@
+version: 1
+workspace:
+  owner: platform-runtime
+repositories:
+  backend: {owner: platform-runtime, reviewers: [platform-engineering]}
+  packages/host-runtime: {owner: frontend-platform, reviewers: [platform-runtime]}
+  frontend-admin: {owner: frontend-platform, reviewers: [platform-engineering]}
+  frontend-merch: {owner: frontend-platform, reviewers: [commerce-experience]}
+  frontend-shop: {owner: frontend-platform, reviewers: [commerce-experience]}
+  frontend-live: {owner: frontend-platform, reviewers: [live-team]}

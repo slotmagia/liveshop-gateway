@@ -1,0 +1,9 @@
+.git
+.github
+.run
+node_modules
+**/node_modules
+**/dist
+**/*.log
+README.md
+AGENTS.md

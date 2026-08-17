@@ -1,0 +1,28 @@
+version: 1
+rules:
+  - from: frontend-*
+    allow: [packages/host-runtime, published/host-sdk, published/design-tokens]
+    deny: [module-source, platform-internal]
+  - from: packages/host-runtime
+    allow: [published/host-sdk]
+    deny: [module-source, platform-internal]
+  - from: backend
+    allow: [published/contracts/modulemanifest, published/kernel-go]
+    deny: [platform-internal, module-internal]
+# The executed Identity browser allowlist lives in
+# internal/gateway/common/server/routes.go. Platform has no browser route.
+# backend/cmd/archcheck proves the two lists are identical, so this declaration
+# can never drift from what the process actually serves.
+browser_routes:
+  allow:
+    - /auth/login
+    - /auth/guest
+    - /auth/refresh
+    - /auth/logout
+    - /auth/me
+    - /auth/context/switch
+    - /runtime/v1/contributions
+    - /runtime/v1/module-sessions
+    - /runtime/v1/iam/me
+    - /runtime/v1/module-catalog
+  deny: [/internal/*]

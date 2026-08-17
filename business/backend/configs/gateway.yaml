@@ -1,0 +1,63 @@
+# Local development configuration. Every value the process needs is here:
+# Gateway reads no environment variable and applies no code default.
+service: gateway
+
+log:
+  level: info
+  format: text
+
+server:
+  http: ":8081"
+
+identity:
+  origin_url: "http://127.0.0.1:8092"
+
+platform:
+  registry_url: "http://127.0.0.1:8082"
+
+# Public verification key of the Identity Module Capability issuer.
+module_capability:
+  key_id: module-capability-dev-1
+  public_key: 11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo
+  issuer: liveshop-identity
+
+# Gateway's own workload identity, presented to Platform internal endpoints.
+workload_identity:
+  key_id: gateway-workload-dev-1
+  private_key: k51SIJI3oT-PJGXf2uWjL6jyTiDJ1Nwmk6l1ehqDrqA
+  issuer: liveshop-workload-identity
+
+http:
+  # Every browser origin belongs to exactly one security surface. Do not merge
+  # this back into a flat allowlist: credentialed /auth refresh is same-origin
+  # at Gateway and must not be callable across Admin/Merchant surfaces.
+  surface_origins:
+    admin:
+      - http://127.0.0.1:5173
+      - http://127.0.0.1:5177
+      - http://127.0.0.1:5180
+      - http://127.0.0.1:5201
+      - http://127.0.0.1:5290
+      - http://127.0.0.1:5300
+    merch:
+      - http://127.0.0.1:5174
+      - http://127.0.0.1:5191
+      - http://127.0.0.1:5195
+      - http://127.0.0.1:5202
+      - http://127.0.0.1:5291
+      - http://127.0.0.1:5301
+    shop:
+      - http://127.0.0.1:5175
+      - http://127.0.0.1:5192
+      - http://127.0.0.1:5203
+      - http://127.0.0.1:5292
+      - http://127.0.0.1:5302
+    live:
+      - http://127.0.0.1:5176
+      - http://127.0.0.1:5204
+      - http://127.0.0.1:5303
+
+route_refresh:
+  interval: 5s
+  timeout: 3s
+  max_staleness: 30s

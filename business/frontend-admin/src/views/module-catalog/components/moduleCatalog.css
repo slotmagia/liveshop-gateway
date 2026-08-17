@@ -1,0 +1,87 @@
+/**
+ * Layout for the module capability centre. This is the one page that owns a
+ * domain-specific layout, so its rules live with the view instead of in the
+ * shared kit or in the Host shell. Borders, surfaces and cards come from
+ * `@liveshop/design-tokens`; only geometry is declared here.
+ */
+
+.cap-center { min-height: 560px; display: grid; grid-template-columns: 240px minmax(0, 1fr); }
+.cap-sidebar { padding: 20px 14px; border-right: 1px solid var(--ls-border); }
+.cap-sidebar__heading { margin: 0 4px 18px; }
+.cap-sidebar__heading > span, .cap-eyebrow { color: var(--ls-primary); font-size: 10px; font-weight: 800; letter-spacing: .16em; }
+.cap-sidebar__heading h2 { margin: 7px 0 4px; color: var(--ls-ink); font-size: 16px; }
+.cap-sidebar__heading p { margin: 0; color: var(--ls-muted); font-size: 12px; }
+.cap-search { display: grid; gap: 6px; margin-bottom: 16px; color: var(--ls-muted); font-size: 11px; }
+
+.cap-module { width: 100%; display: grid; gap: 7px; margin: 5px 0; padding: 11px 12px; border: 1px solid transparent; border-radius: var(--ls-radius-sm); color: var(--ls-muted); background: transparent; text-align: left; cursor: pointer; }
+.cap-module:hover { color: var(--ls-ink); background: var(--ls-surface-subtle); }
+.cap-module[data-active="true"] { border-color: var(--ls-primary-line); color: var(--ls-primary); background: var(--ls-primary-soft); box-shadow: inset 3px 0 var(--ls-primary); }
+.cap-module span { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.cap-module strong { font-size: 13px; }
+.cap-module code, .cap-module small { color: var(--ls-subtle); font-size: 10px; }
+.cap-module code { overflow: hidden; text-overflow: ellipsis; }
+
+.cap-detail { min-width: 0; overflow: hidden; padding: 24px 26px 40px; }
+.cap-detail__heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+.cap-detail__heading h1 { margin: 8px 0 4px; color: var(--ls-ink); font-size: 28px; letter-spacing: -.025em; }
+.cap-detail__heading p { margin: 0; color: var(--ls-muted); font-size: 12px; }
+.cap-release { display: flex; align-items: flex-end; gap: 10px; }
+.cap-release label { display: grid; gap: 5px; color: var(--ls-muted); font-size: 10px; }
+.cap-release select { min-width: 142px; }
+.cap-summary { margin: 20px 0 24px; }
+
+.cap-section { margin-top: 30px; }
+.cap-section__title { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 12px; }
+.cap-section__title > div { display: flex; align-items: center; gap: 9px; }
+.cap-section__title span { color: var(--ls-primary); font: 700 10px var(--ls-font-mono); }
+.cap-section__title h2 { margin: 0; color: var(--ls-ink); font-size: 17px; }
+.cap-section__title p { margin: 0; color: var(--ls-muted); font-size: 11px; }
+
+.cap-contract { margin: 8px 0; }
+.cap-contract[open] { border-color: var(--ls-primary-line); box-shadow: var(--ls-shadow-raised); }
+.cap-contract > summary { display: grid; grid-template-columns: 64px minmax(180px, 1fr) minmax(130px, .7fr); align-items: center; gap: 12px; padding: 12px 14px; list-style: none; cursor: pointer; }
+.cap-contract > summary::-webkit-details-marker { display: none; }
+.cap-contract > summary code { overflow: hidden; color: var(--ls-ink-soft); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.cap-contract > summary strong { color: var(--ls-ink); font-size: 12px; }
+.cap-contract__body { padding: 2px 16px 18px; border-top: 1px solid var(--ls-border); color: var(--ls-muted); }
+.cap-contract__body > p { color: var(--ls-muted); font-size: 12px; line-height: 1.7; }
+.cap-contract__body h4 { margin: 16px 0 8px; color: var(--ls-ink); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+
+.cap-method { width: fit-content; min-width: 48px; padding: 4px 6px; border-radius: var(--ls-radius-xs); color: var(--ls-muted); background: var(--ls-surface-sunken); font: 800 9px var(--ls-font-mono); text-align: center; text-transform: uppercase; }
+.cap-method--get { color: var(--ls-success); background: var(--ls-success-bg); }
+.cap-method--post { color: var(--ls-primary); background: var(--ls-primary-soft); }
+.cap-method--put, .cap-method--patch { color: var(--ls-warning); background: var(--ls-warning-bg); }
+.cap-method--delete { color: var(--ls-danger); background: var(--ls-danger-bg); }
+.cap-method--grpc { color: var(--ls-info); background: var(--ls-info-bg); }
+
+.cap-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--ls-subtle); font-size: 10px; }
+.cap-tag { display: inline-block; margin: 2px 5px 2px 0; padding: 3px 6px; border-radius: var(--ls-radius-xs); color: var(--ls-primary); background: var(--ls-primary-soft); font-size: 10px; }
+.cap-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 7px; }
+.cap-fields > div { min-width: 0; padding: 9px 10px; border: 1px solid var(--ls-border); border-radius: var(--ls-radius-sm); background: var(--ls-surface-subtle); }
+.cap-fields code { color: var(--ls-ink-soft); font-size: 10px; }
+.cap-fields span { margin-left: 7px; color: var(--ls-subtle); font-size: 9px; }
+.cap-fields p { margin: 5px 0 0; color: var(--ls-muted); font-size: 10px; line-height: 1.5; }
+.cap-response, .cap-callable { display: grid; gap: 6px; margin: 7px 0; padding: 10px; border-left: 2px solid var(--ls-primary-line); background: var(--ls-surface-subtle); }
+.cap-response > span, .cap-callable > span { color: var(--ls-subtle); font-size: 10px; }
+.cap-callable > p { margin: 0; color: var(--ls-muted); font-size: 11px; }
+.cap-empty { color: var(--ls-subtle); font-size: 11px; }
+
+.cap-permissions { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 8px; }
+.cap-permissions article { padding: 12px; }
+.cap-permissions code { display: block; margin-bottom: 6px; color: var(--ls-primary); font-size: 10px; }
+.cap-permissions strong { color: var(--ls-ink); font-size: 11px; }
+.cap-permissions p { margin: 5px 0 0; color: var(--ls-muted); font-size: 10px; line-height: 1.5; }
+
+.cap-agent { display: grid; gap: 8px; margin-top: 12px; padding: 14px 16px; border: 1px solid var(--ls-primary-line); border-radius: var(--ls-radius-md); background: var(--ls-primary-soft); }
+.cap-agent strong { color: var(--ls-ink); font-size: 12px; }
+.cap-agent code { width: fit-content; color: var(--ls-primary); font-size: 10px; }
+.cap-agent p { margin: 0; color: var(--ls-muted); font-size: 11px; line-height: 1.6; }
+
+@media (max-width: 760px) {
+  .cap-center { grid-template-columns: 1fr; }
+  .cap-sidebar { border-right: 0; border-bottom: 1px solid var(--ls-border); }
+  .cap-detail { padding: 20px 14px 32px; }
+  .cap-detail__heading, .cap-section__title { align-items: flex-start; flex-direction: column; }
+  .cap-contract > summary { grid-template-columns: 58px 1fr; }
+  .cap-contract > summary strong { grid-column: 2; }
+}

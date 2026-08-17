@@ -1,0 +1,15 @@
+{
+  "name": "@liveshop/gateway-workspace",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*",
+    "frontend-*"
+  ],
+  "scripts": {
+    "build:runtime": "npm run build --workspace=@liveshop/host-runtime",
+    "build:hosts": "npm run build --workspace=@liveshop/app-admin && npm run build --workspace=@liveshop/app-merch && npm run build --workspace=@liveshop/app-shop && npm run build --workspace=@liveshop/app-live",
+    "build": "npm run build:runtime && npm run build:hosts",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  }
+}

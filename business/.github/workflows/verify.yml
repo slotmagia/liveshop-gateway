@@ -1,0 +1,23 @@
+name: verify
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22.x'
+          cache-dependency-path: backend/go.sum
+      - name: Verify published dependency contract
+        run: |
+          go mod edit -dropreplace=github.com/liveshop-platform/contracts
+          go mod edit -dropreplace=github.com/lvtuopen-ai/kernel-go
+          go test ./...

@@ -1,0 +1,35 @@
+{
+  "name": "@liveshop/host-runtime",
+  "version": "0.4.1",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {"types": "./dist/index.d.ts", "import": "./dist/index.js"},
+    "./console": {"types": "./dist/console/index.d.ts", "import": "./dist/console/index.js"},
+    "./host.css": "./src/host.css"
+  },
+  "files": ["dist", "src/host.css"],
+  "scripts": {"build": "tsc -p tsconfig.json", "typecheck": "tsc -p tsconfig.json --noEmit", "test": "vitest run"},
+  "dependencies": {
+    "@liveshop/design-tokens": "file:../../../../liveshop-platform/business/packages/design-tokens",
+    "@liveshop/host-sdk": "file:../../../../liveshop-platform/business/packages/host-sdk",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.544.0",
+    "tailwind-merge": "^2.6.0"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "typescript": "^5.7.3",
+    "jsdom": "^26.1.0",
+    "vitest": "^3.2.4"
+  }
+}
