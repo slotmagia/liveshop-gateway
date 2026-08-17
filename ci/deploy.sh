@@ -45,6 +45,8 @@ if [ -f "$release_dir/business/module.json" ]; then
 fi
 if [[ "$raw_version" =~ ^([0-9]+)\.([0-9]+)\.[0-9]+$ ]]; then
   release_version="${BASH_REMATCH[1]}.${BASH_REMATCH[2]}.$CI_PIPELINE_ID"
+elif [ "$REGISTER_MODULE" = "false" ] && [ -z "$raw_version" ]; then
+  release_version="0.0.$CI_PIPELINE_ID"
 else
   printf 'Module manifest version must be strict X.Y.Z: %s\n' "$raw_version" >&2
   exit 1
