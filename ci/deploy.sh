@@ -11,6 +11,7 @@ set -Eeuo pipefail
 : "${CI_REGISTRY_IMAGE:?CI_REGISTRY_IMAGE is required}"
 : "${MODULE_NAME:?MODULE_NAME is required}"
 : "${MODULE_ID:?MODULE_ID is required}"
+: "${BACKEND_HOST:=127.0.0.1}"
 : "${BACKEND_PORT:?BACKEND_PORT is required}"
 : "${READINESS_URL:?READINESS_URL is required}"
 : "${READINESS_MODE:?READINESS_MODE is required}"
@@ -63,7 +64,7 @@ wait_tcp() {
   local port="$1"
   local attempt
   for attempt in $(seq 1 120); do
-    if timeout 1 bash -c "exec 3<>/dev/tcp/127.0.0.1/$port" 2>/dev/null; then
+    if timeout 1 bash -c "exec 3<>/dev/tcp/$BACKEND_HOST/$port" 2>/dev/null; then
       return 0
     fi
     sleep 1
