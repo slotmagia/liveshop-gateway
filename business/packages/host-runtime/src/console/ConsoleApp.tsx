@@ -40,9 +40,8 @@ function CenteredNotice({ children }: { children: React.ReactNode }) {
 
 /**
  * The authenticated console: registry-driven navigation, workspace tabs and the
- * dashboard outlets. Session recovery matches the pre-React behaviour — a
- * rejected token is dropped, a refresh is attempted, and only then does the
- * login screen come back.
+ * dashboard outlets. A rejected access token is renewed once; a registry that
+ * still fails after that is shown as an error instead of refreshing forever.
  */
 export function ConsoleApp({ config }: { config: AuthenticatedConsoleHostConfig }) {
   const presentation = consoleSurfaces[config.surface]
@@ -55,6 +54,7 @@ export function ConsoleApp({ config }: { config: AuthenticatedConsoleHostConfig 
   const route = useHashRoute()
   const tokenRef = useRef('')
   const refreshRef = useRef<Promise<string> | null>(null)
+  const registryRecoveryRef = useRef(false)
   tokenRef.current = token
 
   const renewToken = useCallback((): Promise<string> => {
@@ -112,7 +112,10 @@ export function ConsoleApp({ config }: { config: AuthenticatedConsoleHostConfig 
   }, [config])
 
   useEffect(() => {
-    if (!token) return
+    if (!token) {
+      registryRecoveryRef.current = false
+      return
+    }
     let active = true
     setFailure('')
     const load = async () => {
@@ -120,17 +123,24 @@ export function ConsoleApp({ config }: { config: AuthenticatedConsoleHostConfig 
         const loaded = await loadRegistry(hostConfig)
         if (active) setRegistry(loaded)
       } catch {
-        clearAccessToken(config.realm)
+        if (!active) return
+        if (registryRecoveryRef.current) {
+          setFailure('无法加载已注册模块')
+          return
+        }
+        registryRecoveryRef.current = true
         try {
           const session = await refreshAccessToken(config)
           if (!active) return
+          tokenRef.current = session.accessToken
+          const loaded = await loadRegistry(hostConfig)
+          if (!active) return
           setPrincipal(session.principal)
+          setRegistry(loaded)
           setToken(session.accessToken)
         } catch {
           if (!active) return
-          setToken('')
-          setRegistry(undefined)
-          setFailure('会话已失效，请重新登录')
+          setFailure('无法加载已注册模块')
         }
       }
     }

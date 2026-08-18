@@ -22,7 +22,8 @@ import { disposeHostFormModalOwner, handleHostFormModalMessage, type HostModalOw
 
 interface RegistryResponse {
   code: number
-  data: { revision: number; items: RuntimeContribution[] }
+  message?: string
+  data?: { revision: number; items: RuntimeContribution[] }
 }
 
 interface CapabilityResponse {
@@ -205,9 +206,10 @@ async function contributionByID(config: HostConfig, moduleId: string, contributi
   const response = await fetchWithAccessIdentity(config, config.gatewayBaseUrl + `/runtime/v1/contributions?surface=${encodeURIComponent(config.surface)}`, {
     headers: { 'X-Liveshop-Surface': config.surface },
   })
-  const body = await response.json() as RegistryResponse
-  if (!response.ok || body.code !== 0) throw new Error('cannot read authorized module actions')
-  const item = body.data.items.find(candidate => candidate.moduleId === moduleId && candidate.contribution.id === contributionId)
+  const body = await response.json().catch(() => null) as RegistryResponse | null
+  if (!response.ok || !body || body.code !== 0 || !body.data) throw new Error(body?.message || 'cannot read authorized module actions')
+  const items = Array.isArray(body.data.items) ? body.data.items : []
+  const item = items.find(candidate => candidate.moduleId === moduleId && candidate.contribution.id === contributionId)
   if (!item || item.contribution.kind !== 'action') throw new Error('module action is unavailable or forbidden')
   return item
 }
@@ -546,11 +548,14 @@ export async function loadRegistry(config: HostConfig): Promise<HostRegistry> {
   const response = await fetchWithAccessIdentity(config, `${config.gatewayBaseUrl}/runtime/v1/contributions?surface=${config.surface}`, {
     headers: { 'X-Liveshop-Surface': config.surface },
   })
-  const body = await response.json() as RegistryResponse
-  if (!response.ok || body.code !== 0) throw new Error('cannot load module contributions')
+  const body = await response.json().catch(() => null) as RegistryResponse | null
+  if (!response.ok || !body || body.code !== 0 || !body.data) {
+    throw new Error(body?.message || 'cannot load module contributions')
+  }
+  const items = Array.isArray(body.data.items) ? body.data.items : []
   const pages: HostPage[] = [
     ...(config.nativePages || []).map((page) => ({ id: page.id, route: page.route, title: page.title, description: page.description, sort: page.sort, native: page })),
-    ...body.data.items.filter((item) => item.contribution.kind === 'page').map((item) => ({
+    ...items.filter((item) => item.contribution.kind === 'page').map((item) => ({
       id: item.contribution.id,
       route: item.contribution.route || '',
       title: item.contribution.title,
@@ -562,7 +567,7 @@ export async function loadRegistry(config: HostConfig): Promise<HostRegistry> {
     })),
   ].sort((left, right) => left.sort - right.sort || left.id.localeCompare(right.id))
   const byOutlet = new Map<string, RuntimeContribution[]>()
-  for (const item of body.data.items.filter((candidate) => candidate.contribution.kind !== 'page')) {
+  for (const item of items.filter((candidate) => candidate.contribution.kind !== 'page')) {
     const outlet = item.contribution.outlet || ''
     byOutlet.set(outlet, [...(byOutlet.get(outlet) || []), item])
   }

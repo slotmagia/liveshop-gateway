@@ -160,6 +160,19 @@ describe('registry refresh subscription', () => {
     expect(new Headers(fetchMock.mock.calls[1]?.[1]?.headers).get('Authorization')).toBe('Bearer renewed-token')
   })
 
+  it('surfaces the identity error when contributions cannot be read', async () => {
+    const fetchMock = vi.fn(async () => new Response(
+      JSON.stringify({ code: 50300, message: 'identity: registry projection is unavailable or stale' }),
+      { status: 503, headers: { 'Content-Type': 'application/json' } },
+    ))
+    vi.stubGlobal('fetch', fetchMock)
+
+    await expect(loadRegistry({
+      surface: 'admin', title: 'Admin', gatewayBaseUrl: 'http://gateway.test', outlets: [],
+      accessToken: async () => 'token',
+    })).rejects.toThrow('identity: registry projection is unavailable or stale')
+  })
+
   it('retains the mounted snapshot for equal or stale poll revisions', () => {
     const current: HostRegistry = { revision: 7, pages: [], byOutlet: new Map() }
     const equal: HostRegistry = { revision: 7, pages: [], byOutlet: new Map() }
