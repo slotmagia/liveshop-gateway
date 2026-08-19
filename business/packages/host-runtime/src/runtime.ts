@@ -19,6 +19,7 @@ import {
   type Surface,
 } from '@liveshop/host-sdk'
 import { disposeHostFormModalOwner, handleHostFormModalMessage, type HostModalOwner } from './hostModal'
+import { persistLocale, persistShopLocaleMeta, resolveHostLocale, shopLocaleMeta } from './locale'
 
 interface RegistryResponse {
   code: number
@@ -189,7 +190,7 @@ async function getCapability(config: HostConfig, item: RuntimeContribution): Pro
       contributionId: item.contribution.id,
       moduleToken: body.data.token,
       gatewayBaseUrl: config.gatewayBaseUrl,
-      locale: navigator.language || 'en-US',
+      locale: resolveHostLocale({ surface: config.surface, ...shopLocaleMeta() }),
       permissions: body.data.permissions,
       tenant: body.data.tenant,
       theme: { mode: 'light' },
@@ -601,7 +602,13 @@ export interface Principal {
 
 interface LoginResponse {
   code: number
-  data: { accessToken: string; expiresIn: number; principal: Principal }
+  data: {
+    accessToken: string
+    expiresIn: number
+    principal: Principal
+    defaultLocale?: string
+    publishedLocales?: string[]
+  }
 }
 
 export interface Session {
@@ -631,6 +638,7 @@ export async function refreshAccessToken(config: AuthenticatedHostConfig): Promi
   const body = await response.json() as LoginResponse
   if (body.code !== 0 || body.data.principal.realm !== config.realm) throw new Error('authenticated realm does not match this console')
   sessionStorage.setItem(tokenStorageKey(config.realm), body.data.accessToken)
+  persistShopLocaleMeta({ defaultLocale: body.data.defaultLocale, publishedLocales: body.data.publishedLocales })
   return { accessToken: body.data.accessToken, principal: body.data.principal }
 }
 
@@ -643,6 +651,7 @@ export async function guestAccessToken(config: AuthenticatedStorefrontHostConfig
 	if (!response.ok || body.code !== 0) throw new Error(body.message || '游客会话创建失败')
 	if (body.data.principal.realm !== 'CUSTOMER' || body.data.principal.principalType !== 'GUEST') throw new Error('游客身份与当前店铺不匹配')
 	sessionStorage.setItem(tokenStorageKey(config.realm), body.data.accessToken)
+	persistShopLocaleMeta({ defaultLocale: body.data.defaultLocale, publishedLocales: body.data.publishedLocales })
 	return { accessToken: body.data.accessToken, principal: body.data.principal }
 }
 
@@ -667,6 +676,7 @@ export async function login(config: AuthenticatedHostConfig, credentials: Creden
   const body = await response.json() as LoginResponse & { message?: string }
   if (!response.ok || body.code !== 0) throw new Error(body.message || '登录失败')
   sessionStorage.setItem(tokenStorageKey(config.realm), body.data.accessToken)
+  persistShopLocaleMeta({ defaultLocale: body.data.defaultLocale, publishedLocales: body.data.publishedLocales })
   return { accessToken: body.data.accessToken, principal: body.data.principal }
 }
 

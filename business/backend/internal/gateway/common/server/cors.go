@@ -35,7 +35,7 @@ func (g *Gateway) cors(next http.Handler) http.Handler {
 			w.Header().Add("Vary", "Access-Control-Request-Headers")
 			w.Header().Set("Access-Control-Allow-Credentials", "true")
 		}
-		w.Header().Set("Access-Control-Allow-Headers", "Authorization,Content-Type,X-Liveshop-Surface,Idempotency-Key")
+		w.Header().Set("Access-Control-Allow-Headers", "Authorization,Content-Type,X-Liveshop-Surface,Idempotency-Key,X-Locale")
 		w.Header().Set("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS")
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusNoContent)

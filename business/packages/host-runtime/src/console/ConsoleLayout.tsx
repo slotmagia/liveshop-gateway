@@ -5,6 +5,7 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { cn } from '../lib/cn'
 import type { ConsoleSurface, HostPage, Principal } from '../runtime'
+import { persistLocale, resolveHostLocale } from '../locale'
 import { groupNavigationPages } from './navigation'
 
 const SIDEBAR_STORAGE_KEY = 'liveshop.console.sidebar.collapsed'
@@ -104,6 +105,21 @@ export function ConsoleLayout(props: ConsoleLayoutProps) {
           {collapsed ? <PanelLeftOpen className="h-4 w-4" /> : <PanelLeftClose className="h-4 w-4" />}
         </Button>
         <div className="ml-auto flex items-center gap-3">
+          <label className="hidden items-center gap-1 text-xs text-muted-foreground md:inline-flex">
+            <span className="sr-only">语言</span>
+            <select
+              className="h-8 rounded-md border bg-background px-2 text-xs text-foreground"
+              aria-label="语言"
+              defaultValue={resolveHostLocale({ surface: props.surface })}
+              onChange={(event) => {
+                persistLocale(event.currentTarget.value)
+                location.reload()
+              }}
+            >
+              <option value="zh-CN">简体中文</option>
+              <option value="en-US">English</option>
+            </select>
+          </label>
           <span className="hidden items-center gap-2 text-xs font-semibold text-ink-soft md:inline-flex">
             <i className="h-[7px] w-[7px] rounded-full bg-success shadow-[0_0_0_3px_var(--ls-success-bg)]" />
             {props.surface === 'admin' ? '平台端' : '商家端'}

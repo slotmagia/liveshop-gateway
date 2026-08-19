@@ -18,6 +18,7 @@ import {
   type HostConfig,
   type NativeConsolePage,
 } from './runtime'
+import { persistLocale, resolveHostLocale, shopLocaleMeta } from './locale'
 
 interface HostShell {
   nav: HTMLElement
@@ -134,11 +135,23 @@ function renderStorefrontShell(root: HTMLElement, config: HostConfig): HostShell
   language.append(storefrontIcon('globe'))
   const languageSelect = document.createElement('select')
   languageSelect.setAttribute('aria-label', '语言')
-  const languageOption = document.createElement('option')
-  const locale = navigator.language || 'zh-CN'
-  languageOption.value = locale
-  languageOption.textContent = locale.toLowerCase().startsWith('zh') ? '简体中文' : locale
-  languageSelect.append(languageOption)
+  const currentLocale = resolveHostLocale({ surface: config.surface, ...shopLocaleMeta() })
+  const published = shopLocaleMeta().publishedLocales || []
+  const languageOptions = [
+    { value: 'zh-CN', label: '简体中文' },
+    { value: 'en-US', label: 'English' },
+  ].filter(item => published.length === 0 || published.includes(item.value))
+  for (const item of languageOptions.length ? languageOptions : [{ value: 'zh-CN', label: '简体中文' }]) {
+    const option = document.createElement('option')
+    option.value = item.value
+    option.textContent = item.label
+    option.selected = item.value === currentLocale
+    languageSelect.append(option)
+  }
+  languageSelect.addEventListener('change', () => {
+    persistLocale(languageSelect.value)
+    location.reload()
+  })
   language.append(languageSelect)
 
   const actions = document.createElement('div')
