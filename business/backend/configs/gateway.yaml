@@ -13,7 +13,7 @@ identity:
   origin_url: "http://127.0.0.1:18092"
 
 platform:
-  registry_url: "http://127.0.0.1:18082"
+  registry_url: "http://127.0.0.1:18070"
 
 # Public verification key of the Identity Module Capability issuer.
 module_capability:
@@ -21,7 +21,7 @@ module_capability:
   public_key: 11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo
   issuer: liveshop-identity
 
-# Gateway's own workload identity, presented to Platform internal endpoints.
+# Gateway's own workload identity, presented to Registry internal endpoints.
 workload_identity:
   key_id: gateway-workload-dev-1
   private_key: k51SIJI3oT-PJGXf2uWjL6jyTiDJ1Nwmk6l1ehqDrqA

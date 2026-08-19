@@ -47,7 +47,7 @@ function Wait-Ready([string]$Url, [int]$TimeoutMinutes = 5) {
 }
 
 Ensure-LocalNetwork
-Wait-Ready 'http://127.0.0.1:18082/readyz'
+Wait-Ready 'http://127.0.0.1:18070/readyz'
 Wait-Ready 'http://127.0.0.1:18092/readyz'
 
 if ($Fresh) {

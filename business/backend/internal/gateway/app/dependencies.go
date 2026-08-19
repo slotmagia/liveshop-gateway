@@ -15,7 +15,7 @@ type Dependencies struct {
 	// Capabilities verifies the contribution-scoped Module Capability that
 	// Identity issued to the browser for one active Registry revision.
 	Capabilities *modulesession.Verifier
-	// Workload signs Gateway's own identity towards Platform internal endpoints.
+	// Workload signs Gateway's own identity towards Registry internal endpoints.
 	Workload *workloadidentity.Issuer
 }
 

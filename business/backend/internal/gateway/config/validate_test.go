@@ -44,7 +44,7 @@ func TestValidate(t *testing.T) {
 		},
 		{
 			name:    "registry URL is not an origin",
-			mutate:  func(cfg *Config) { cfg.Platform.RegistryURL = "platform:18082" },
+			mutate:  func(cfg *Config) { cfg.Platform.RegistryURL = "registry:18070" },
 			wantErr: "gateway: config platform.registry_url must be an http(s) origin",
 		},
 		{
@@ -141,7 +141,7 @@ func validConfig() *Config {
 	cfg.Log.Format = "text"
 	cfg.Server.HTTP = ":18081"
 	cfg.Identity.OriginURL = "http://identity:18092"
-	cfg.Platform.RegistryURL = "http://platform:18082"
+	cfg.Platform.RegistryURL = "http://registry:18070"
 	cfg.ModuleCapability.KeyID = "module-capability-dev-1"
 	cfg.ModuleCapability.PublicKey = "11qYAYKxCrfVS_7TyWQHOg7hcvPapiMlrwIaaPcHURo"
 	cfg.ModuleCapability.Issuer = "liveshop-identity"

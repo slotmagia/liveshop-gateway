@@ -13,7 +13,7 @@ identity:
   origin_url: "http://identity:18092"
 
 platform:
-  registry_url: "http://platform:18082"
+  registry_url: "http://registry:18070"
 
 module_capability:
   key_id: module-capability-dev-1

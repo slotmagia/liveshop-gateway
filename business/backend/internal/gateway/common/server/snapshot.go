@@ -46,7 +46,7 @@ func (g *Gateway) refreshLoop(ctx context.Context) {
 
 // refresh replaces the snapshot only with a strictly newer, non-empty and
 // fully compilable one. Every other outcome keeps the last good snapshot, so a
-// Platform outage degrades into staleness rather than into an outage here.
+// Registry outage degrades into staleness rather than into an outage here.
 func (g *Gateway) refresh(ctx context.Context) {
 	received, ok := g.fetchRoutes(ctx)
 	if !ok {

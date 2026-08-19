@@ -5,7 +5,7 @@ Gateway 不是业务模块，不建 `模块开发规范.md`。通用开发规范
 - 本仓库拥有无状态 LiveShop 数据面 Gateway、四个稳定前端 Host 外壳及 Host Runtime。
 - 后端根目录为 `backend/internal/gateway`；`config` 拥有配置 schema 与校验，`app` 负责装配和生命周期，`common/server` 是唯一 HTTP 组合根，`cmd` 只包含进程入口。
 - Gateway 进程配置只能来自 `-config` 指定的一份完整 YAML；禁止使用环境变量、隐式 overlay 或代码默认值。缺任何一项配置必须启动失败，不得回落到本机地址。`backend/cmd/archcheck` 会因为出现 `os.Getenv` 而失败。
-- Gateway 不发布任何线协议，因此**不得建立 `protocol/` 目录**；它只依赖 Identity、Platform 和 Kernel 发布的契约模块。
+- Gateway 不发布任何线协议，因此**不得建立 `protocol/` 目录**；它只依赖 Identity、Platform 和 Kernel 发布的契约模块。运行时路由快照由 `liveshop-registry` 提供。
 - 浏览器可达的 Identity 启动路由白名单是 `internal/gateway/common/server/routes.go` 中的精确 method+path 列表，`dependency-policy.yaml` 的 `browser_routes` 必须与之逐条一致，由 archcheck 强制。Platform 没有浏览器代理路由。
 - Host 位于仓库根目录 `frontend-admin`、`frontend-merch`、`frontend-shop` 和 `frontend-live`；禁止建立嵌套的 `frontend` 或 `apps/frontend` 工作区。
 - `@liveshops/host-sdk` 与 `@liveshops/design-tokens` 从 npm 安装已发布版本（`0.3.4` / `1.5.3`）。禁止 `file:` 指向 Platform 源码。
@@ -19,7 +19,7 @@ Gateway 不是业务模块，不建 `模块开发规范.md`。通用开发规范
 - 分页参数不得进入查询卡；分页列表统一在数据卡底部使用共享分页工具栏，表头与表格之间不得显示常驻统计条。
 - 后台 Host 的 `html`、`body` 和挂载根节点必须锁定视口高度并禁止根文档滚动；纵向页面滚动只能由 `data-page-scroll-container` 承担。
 - 模块产物（iframe、remote-esm）和原生页仍然是命令式挂载。React 侧只提供容器，不去 reconcile 模块自己的 DOM。
-- Platform Registry 路由快照是模块端点能否路由的唯一事实源。
+- Platform Registry 路由快照是模块端点能否路由的唯一事实源。运行时所有者是独立进程 `liveshop-registry`；Gateway 只读快照。
 - Gateway 禁止拥有业务状态、IAM/RBAC 状态、模块注册状态或跨模块业务编排。
 - Gateway Admin 能力中心只是 Platform Registry Manifest 的只读投影，禁止保存、探测或覆盖模块能力状态。
 - 浏览器代码只能调用 Gateway。`/auth/*` 和 `/runtime/v1/*` 都是显式 Identity 启动路由；Platform 只作为 Identity/Gateway 使用工作负载身份访问的内部 Registry/Control Plane，`/internal/*` 永远不能暴露给浏览器。
@@ -32,7 +32,7 @@ Gateway 不是业务模块，不建 `模块开发规范.md`。通用开发规范
 - CORS 是明确的 Gateway 边界。每个配置 origin 必须唯一绑定到一个 surface，实际请求与模块路由预检都不能跨 surface；禁止恢复平面 allowlist。
 - 可重试集成行为使用稳定 event/request ID；禁止对非幂等下游操作盲目重试。
 - 直接演进当前唯一实现。除非存在明确外部兼容契约，否则禁止引入旧路由、feature flag 或 Gateway 多版本实现。
-- 完成前必须运行 `tools/verify.ps1`，并通过 Platform Compose 重建本地 Gateway 容器。
+- 完成前必须运行 `tools/verify.ps1`，并通过本仓库 Compose 重建本地 Gateway 容器。
 
 ## 领域语义保持
 
