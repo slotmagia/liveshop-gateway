@@ -439,10 +439,17 @@ async function verifyRemoteSource(entry: string, integrity: string): Promise<str
   return source
 }
 
+function hostAuthConfig(config: HostConfig): AuthenticatedHostConfig {
+  const authenticated = config as HostConfig & Partial<AuthenticatedHostConfig>
+  const realm: Realm = authenticated.realm || (config.surface === 'admin' ? 'PLATFORM' : config.surface === 'merch' ? 'MERCHANT' : 'CUSTOMER')
+  return { surface: config.surface, gatewayBaseUrl: config.gatewayBaseUrl, realm, shopCode: authenticated.shopCode }
+}
+
 async function mountRemote(
   container: HTMLElement,
   item: RuntimeContribution,
   context: HostContext,
+  config: HostConfig,
   onReady?: () => void,
 ): Promise<ContributionDisposer> {
   const source = await verifyRemoteSource(item.contribution.artifact.entry, item.contribution.artifact.integrity)
@@ -455,9 +462,14 @@ async function mountRemote(
   }
   const exported = namespace[item.contribution.artifact.exportName || 'default'] as RemoteModule | undefined
   if (!exported?.mount) throw new Error(`missing remote export ${item.contribution.artifact.exportName}`)
+  const hostLogin = login
   const remoteContext = Object.assign(context, {
     api: createHttpClient(context),
     navigate(path: string) { location.hash = path },
+    async login(credentials: Parameters<NonNullable<RemoteModuleContext['login']>>[0]) {
+      await hostLogin(hostAuthConfig(config), credentials)
+      location.reload()
+    },
     events,
   }) as RemoteModuleContext
   await exported.mount(container, remoteContext)
@@ -484,7 +496,7 @@ export async function mountContribution(
       updateContext = mounted.updateContext
       disposeContribution = mounted.dispose
     } else {
-      disposeContribution = await mountRemote(container, item, context, onReady)
+      disposeContribution = await mountRemote(container, item, context, config, onReady)
     }
     const disposeRefresh = subscribeModuleCapabilityRefresh(
       () => getCapability(config, item),
@@ -635,13 +647,19 @@ export async function guestAccessToken(config: AuthenticatedStorefrontHostConfig
 }
 
 export interface Credentials {
-  username: string
-  password: string
+  username?: string
+  password?: string
+  challengeId?: string
 }
 
 export async function login(config: AuthenticatedHostConfig, credentials: Credentials): Promise<Session> {
-  const loginBody: Record<string, unknown> = { realm: config.realm, username: credentials.username, password: credentials.password }
+  const loginBody: Record<string, unknown> = { realm: config.realm }
   if (config.shopCode) loginBody.shopCode = config.shopCode
+  if (credentials.challengeId) loginBody.challengeId = credentials.challengeId
+  else {
+    loginBody.username = credentials.username
+    loginBody.password = credentials.password
+  }
   const response = await fetch(config.gatewayBaseUrl + '/auth/login', {
     method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json', 'X-Liveshop-Surface': config.surface },
     body: JSON.stringify(loginBody),

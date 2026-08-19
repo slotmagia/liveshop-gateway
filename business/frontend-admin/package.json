@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@liveshop/design-tokens": "file:../../../liveshop-platform/business/packages/design-tokens",
-    "@liveshop/host-runtime": "0.4.1",
+    "@liveshop/host-runtime": "0.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

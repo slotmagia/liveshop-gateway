@@ -41,6 +41,21 @@ describe('customer authentication', () => {
     expect(JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))).toEqual({ realm: 'CUSTOMER', username: 'customer', password: '123456', shopCode: 'local-shop' })
   })
 
+    it('sends a verified challenge without a password', async () => {
+    const fetchMock = vi.fn(async (_input: string | URL | Request, _init?: RequestInit) => new Response(JSON.stringify({
+      code: 0,
+      data: { accessToken: 'otp-token', expiresIn: 900, principal: { realm: 'CUSTOMER', principalType: 'CUSTOMER', subject: 'customer-otp', username: '' } },
+    }), { status: 200, headers: { 'Content-Type': 'application/json' } }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    const session = await login({ surface: 'shop', realm: 'CUSTOMER', shopCode: 'local-shop', gatewayBaseUrl: 'http://gateway.test' }, { challengeId: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' })
+
+    expect(session.accessToken).toBe('otp-token')
+    expect(JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body))).toEqual({
+      realm: 'CUSTOMER', shopCode: 'local-shop', challengeId: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    })
+  })
+
   it('creates and stores a shop-bound guest identity', async () => {
     const fetchMock = vi.fn(async () => new Response(JSON.stringify({
       code: 0,
