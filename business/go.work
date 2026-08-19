@@ -2,6 +2,6 @@ go 1.25.0
 
 use (
 	../../kernel-go
-	../../liveshop-platform/protocol
+	../../liveshop-protocol/platform
 	./backend
 )

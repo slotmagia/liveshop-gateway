@@ -10,7 +10,7 @@ require (
 
 // Local workspace development uses the adjacent source checkouts. Release CI
 // must drop these replacements and resolve the pinned published modules.
-replace github.com/liveshop-platform/contracts => ../../../liveshop-platform/protocol
+replace github.com/liveshop-platform/contracts => ../../../liveshop-protocol/platform
 
 replace github.com/lvtuopen-ai/kernel-go => ../../../kernel-go
 

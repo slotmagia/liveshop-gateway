@@ -6,7 +6,7 @@ services:
       context: ..
       dockerfile: Dockerfile
       additional_contexts:
-        protocol: ../../../../liveshop-platform/protocol
+        protocol: ../../../../liveshop-protocol/platform
         kernel: ../../../../kernel-go
     command: ["-config", "/app/configs/gateway.compose.yaml"]
     ports: ["127.0.0.1:18081:18081"]
