@@ -7,8 +7,8 @@ import {
   type HostFormModalRequestMessage,
   type HostModalField,
   type HostModalTreeNode,
-} from '@liveshop/host-sdk'
-import { formModal, type FormModalApi } from '@liveshop/design-tokens'
+} from '@liveshops/host-sdk'
+import { formModal, type FormModalApi } from '@liveshops/design-tokens'
 
 export interface HostModalOwner {
   postMessage(message: unknown, targetOrigin: string): void

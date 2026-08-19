@@ -1,5 +1,5 @@
 import type { CapabilityField, CapabilityRelease, Contribution, GRPCMethod, HTTPOperation, ModuleCatalog } from '../types'
-import { badgeClass, ui } from '@liveshop/design-tokens'
+import { badgeClass, ui } from '@liveshops/design-tokens'
 
 const escapeHTML = (value: unknown) => String(value ?? '').replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character]!)
 const tags = (values: string[]) => values.map((value) => `<code class="cap-tag">${escapeHTML(value)}</code>`).join('')

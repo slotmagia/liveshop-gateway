@@ -8,8 +8,9 @@ Gateway 不是业务模块，不建 `模块开发规范.md`。通用开发规范
 - Gateway 不发布任何线协议，因此**不得建立 `protocol/` 目录**；它只依赖 Identity、Platform 和 Kernel 发布的契约模块。
 - 浏览器可达的 Identity 启动路由白名单是 `internal/gateway/common/server/routes.go` 中的精确 method+path 列表，`dependency-policy.yaml` 的 `browser_routes` 必须与之逐条一致，由 archcheck 强制。Platform 没有浏览器代理路由。
 - Host 位于仓库根目录 `frontend-admin`、`frontend-merch`、`frontend-shop` 和 `frontend-live`；禁止建立嵌套的 `frontend` 或 `apps/frontend` 工作区。
-- 视觉契约只有 `@liveshop/design-tokens` 一个来源：两个后台 Host 导入 `console.css` 与 `tailwind.css`，商城和直播 Host 导入 `tokens.css`。Host Runtime 的样式表只描述外壳几何，禁止在其中写死颜色或为缺失的 token 写 `var(..., #fallback)`——那会让某个 Host 悄悄跑在第二套配色上。
-- 两个后台 Host 用 React + Tailwind 渲染外壳，Tailwind 配置只能是 `presets: [@liveshop/design-tokens/tailwind-preset]` 加一份 `content`；在 `theme.extend` 里写颜色、圆角、阴影或字体等同于新建第二套配色，一律禁止。商城和直播 Host 保持原生 DOM，`@liveshop/host-runtime` 的默认入口因此不得引入 React——控制台代码只放在 `./console` 子入口下。
+- `@liveshops/host-sdk` 与 `@liveshops/design-tokens` 从 npm 安装已发布版本（`0.3.4` / `1.5.3`）。禁止 `file:` 指向 Platform 源码。
+- 视觉契约只有 `@liveshops/design-tokens` 一个来源：两个后台 Host 导入 `console.css` 与 `tailwind.css`，商城和直播 Host 导入 `tokens.css`。Host Runtime 的样式表只描述外壳几何，禁止在其中写死颜色或为缺失的 token 写 `var(..., #fallback)`——那会让某个 Host 悄悄跑在第二套配色上。
+- 两个后台 Host 用 React + Tailwind 渲染外壳，Tailwind 配置只能是 `presets: [@liveshops/design-tokens/tailwind-preset]` 加一份 `content`；在 `theme.extend` 里写颜色、圆角、阴影或字体等同于新建第二套配色，一律禁止。商城和直播 Host 保持原生 DOM，`@liveshop/host-runtime` 的默认入口因此不得引入 React——控制台代码只放在 `./console` 子入口下。
 - 四个 Host 都必须从当前活动 Registry contribution 的 `title`/`description` 渲染菜单说明卡片；模块不得维护第二份页面级标题。原生页面同样必须声明 `description`，不能绕过这份契约。
 - 管理型 contribution 必须采用“说明卡 → 独立查询卡 → 数据卡”的顺序；三张卡的左右边界和内容宽度必须一致，contribution 根节点不得添加水平内边距；iframe 必须通过 Host SDK 上报内容高度并由 Host 工作区统一滚动，禁止嵌套纵向滚动条；数据卡工具栏承载刷新、新增、导入、导出和批量操作，禁止独立页面工具栏。
 - iframe 只是模块内容视口，必须保持透明且不得带圆角、阴影或白色表面；禁止把查询卡和数据卡包进一个额外的外层白色卡片。

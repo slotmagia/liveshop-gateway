@@ -1,5 +1,5 @@
-import '@liveshop/design-tokens/console.css'
-import '@liveshop/design-tokens/tailwind.css'
+import '@liveshops/design-tokens/console.css'
+import '@liveshops/design-tokens/tailwind.css'
 import '@liveshop/host-runtime/host.css'
 import { mountAuthenticatedConsoleHost } from '@liveshop/host-runtime/console'
 import { mountModuleCatalog } from './views/module-catalog/ModuleCatalogPage'

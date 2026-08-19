@@ -1,5 +1,5 @@
 import type { NativePageContext } from '@liveshop/host-runtime'
-import { emptyState, notify, ui } from '@liveshop/design-tokens'
+import { emptyState, notify, ui } from '@liveshops/design-tokens'
 import { fetchModuleCatalog } from './api/moduleCatalogApi'
 import { renderModuleList, renderRelease } from './components/renderers'
 import './components/moduleCatalog.css'

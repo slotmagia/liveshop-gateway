@@ -1,5 +1,5 @@
 /**
- * The React face of `@liveshop/design-tokens`. Every class here is a utility
+ * The React face of `@liveshops/design-tokens`. Every class here is a utility
  * from the shared Tailwind preset, so a primitive can only ever render colours,
  * radii and shadows that exist as a token.
  */

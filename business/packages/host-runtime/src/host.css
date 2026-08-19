@@ -1,6 +1,6 @@
 /**
  * Shell styling for the storefront and live Hosts. Every value comes from
- * `@liveshop/design-tokens`, which each Host imports before this file, so no
+ * `@liveshops/design-tokens`, which each Host imports before this file, so no
  * rule here may carry a fallback: a missing token must fail visibly rather
  * than silently render a second palette.
  *

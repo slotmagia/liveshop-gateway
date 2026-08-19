@@ -1,4 +1,4 @@
-import preset from '@liveshop/design-tokens/tailwind-preset'
+import preset from '@liveshops/design-tokens/tailwind-preset'
 
 /**
  * The console reads its scales from the shared preset, so this file only

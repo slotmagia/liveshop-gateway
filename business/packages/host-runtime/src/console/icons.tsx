@@ -1,4 +1,4 @@
-import { resolveGroupIconName, resolvePageIconName } from '@liveshop/design-tokens'
+import { resolveGroupIconName, resolvePageIconName } from '@liveshops/design-tokens'
 import * as LucideIcons from 'lucide-react'
 import { FolderKanban, LayoutGrid, type LucideIcon } from 'lucide-react'
 import type { HostPage } from '../runtime'

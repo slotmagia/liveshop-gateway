@@ -8,8 +8,8 @@
     "build": "tsc --noEmit && vite build"
   },
   "dependencies": {
-    "@liveshop/design-tokens": "file:../../../liveshop-platform/business/packages/design-tokens",
-    "@liveshop/host-runtime": "0.4.2"
+    "@liveshops/design-tokens": "1.5.3",
+    "@liveshop/host-runtime": "0.4.3"
   },
   "devDependencies": {
     "typescript": "^5.7.3",

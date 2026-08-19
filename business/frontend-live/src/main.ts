@@ -1,4 +1,4 @@
-import '@liveshop/design-tokens/storefront.css'
+import '@liveshops/design-tokens/storefront.css'
 import '@liveshop/host-runtime/host.css'
 import { mountStorefrontHost } from '@liveshop/host-runtime'
 

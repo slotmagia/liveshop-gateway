@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { HOST_PROTOCOL, type HostFormModalOpenMessage } from '@liveshop/host-sdk'
+import { HOST_PROTOCOL, type HostFormModalOpenMessage } from '@liveshops/host-sdk'
 import {
   disposeHostFormModalOwner,
   handleHostFormModalMessage,

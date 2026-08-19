@@ -2,7 +2,7 @@
  * Layout for the module capability centre. This is the one page that owns a
  * domain-specific layout, so its rules live with the view instead of in the
  * shared kit or in the Host shell. Borders, surfaces and cards come from
- * `@liveshop/design-tokens`; only geometry is declared here.
+ * `@liveshops/design-tokens`; only geometry is declared here.
  */
 
 .cap-center { min-height: 560px; display: grid; grid-template-columns: 240px minmax(0, 1fr); }

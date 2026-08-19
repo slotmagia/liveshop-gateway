@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { HOST_PROTOCOL, type HostContext } from '@liveshop/host-sdk'
+import { HOST_PROTOCOL, type HostContext } from '@liveshops/host-sdk'
 import { closeIframeHostOverlay, guestAccessToken, handleHostNotifyMessage, loadRegistry, login, mountContribution, normalizeIframeContentHeight, openIframeHostOverlay, reconcileRegistryRefresh, subscribeModuleCapabilityRefresh, subscribeRegistryRefresh, updateIframeContentHeight, type HostRegistry } from './runtime'
 
 afterEach(() => {

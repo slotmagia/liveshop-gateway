@@ -6,7 +6,7 @@
  * The React console and the plain storefront shell both sit on this file, so a
  * change to the Host protocol is made once and cannot drift between surfaces.
  */
-import { notify } from '@liveshop/design-tokens'
+import { notify } from '@liveshops/design-tokens'
 import {
   HOST_PROTOCOL,
   createHttpClient,
@@ -17,7 +17,7 @@ import {
   type RemoteModuleContext,
   type RuntimeContribution,
   type Surface,
-} from '@liveshop/host-sdk'
+} from '@liveshops/host-sdk'
 import { disposeHostFormModalOwner, handleHostFormModalMessage, type HostModalOwner } from './hostModal'
 import { persistLocale, persistShopLocaleMeta, resolveHostLocale, shopLocaleMeta } from './locale'
 
@@ -45,6 +45,7 @@ export interface HostConfig {
   renewAccessToken?(): Promise<string>
   outlets: string[]
   nativePages?: NativeConsolePage[]
+  shopCode?: string
 }
 
 async function fetchWithAccessIdentity(config: HostConfig, input: string, init: RequestInit = {}): Promise<Response> {
@@ -193,6 +194,7 @@ async function getCapability(config: HostConfig, item: RuntimeContribution): Pro
       locale: resolveHostLocale({ surface: config.surface, ...shopLocaleMeta() }),
       permissions: body.data.permissions,
       tenant: body.data.tenant,
+      shopCode: config.shopCode,
       theme: { mode: 'light' },
     },
   }
